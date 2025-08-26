@@ -1,5 +1,4 @@
-module.exports = (req, res) => {
-  res.setHeader('content-type', 'text/plain; charset=utf-8');
-  if (req.url === '/ping') return res.status(200).end('pong');
-  return res.status(200).end('root ok');
-};
+// api/index.js
+const serverless = require('serverless-http');
+const app = require('../server');   // <-- loads your Express app
+module.exports = serverless(app);
