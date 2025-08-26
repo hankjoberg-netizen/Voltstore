@@ -1,53 +1,39 @@
-const express = require('express');
+// server.js
 const path = require('path');
-const fs = require('fs');
-const session = require('cookie-session');
+const express = require('express');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-// Middleware
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(
-  session({
-    secret: 'voltstore-secret',
-    resave: false,
-    saveUninitialized: true,
-  })
-);
-
-// Set EJS as view engine
+// Views (EJS) + static
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-// Load products
-const productsPath = path.join(__dirname, 'products.json');
-let products = [];
-if (fs.existsSync(productsPath)) {
-  products = JSON.parse(fs.readFileSync(productsPath, 'utf8'));
-}
-
-// Routes
+// --- Routes ---
+// Home
 app.get('/', (req, res) => {
-  res.render('index', { products });
+  // If you already have views/index.ejs, this will render it.
+  // Otherwise it will just send plain text so you at least see something.
+  try {
+    return res.render('index', { title: 'VoltStore' });
+  } catch {
+    return res.send('VoltStore home ✅');
+  }
 });
 
-app.get('/product/:id', (req, res) => {
-  const product = products.find(p => p.id == req.params.id);
-  if (!product) return res.status(404).send('Product not found');
-  res.render('product', { product });
-});
+// Simple health check
+app.get('/health', (_req, res) => res.status(200).send('ok'));
 
-// Test route
-app.get('/ping', (req, res) => {
-  res.send('pong');
-});
-
-// Export for Vercel (via api/index.js) or run locally
-if (process.env.VERCEL) {
+// Export for Vercel, listen locally for dev
+const PORT = process.env.PORT || 3000;
+if (process.env.VERCEL || process.env.NOW_REGION) {
+  // Running on Vercel (Serverless)
   module.exports = app;
 } else {
-  app.listen(PORT, () => console.log(`Running locally at http://localhost:${PORT}`));
+  // Running locally (Replit/Node)
+  app.listen(PORT, () => {
+    console.log(`VoltStore listening on http://localhost:${PORT}`);
+  });
 }
