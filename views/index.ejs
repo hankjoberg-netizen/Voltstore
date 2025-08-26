@@ -1,18 +1,54 @@
-<%- include('partials/header', { title: 'Shop Tech Gadgets' }) %>
-<section class="container" style="padding:24px">
-  <h1>VoltStore ✅</h1>
-  <p>If you can see this, EJS is working.</p>
+<%- include('partials/header', { title: 'VoltStore' }) %>
 
-  <p><a href="/ping">Test /ping</a></p>
+<section class="hero">
+  <div class="container">
+    <h1>Fresh tech, shipped by VoltStore</h1>
+    <p>Browse our curated gadgets. Click a product to see details and buy directly from us.</p>
 
-  <% if ((products || []).length === 0) { %>
-    <p>No products loaded. That’s ok for this test.</p>
+    <form class="searchbar" method="get" action="/">
+      <input type="text" name="q" placeholder="Search products..." value="<%= q || '' %>">
+      <button class="btn" type="submit">Search</button>
+    </form>
+  </div>
+</section>
+
+<section class="container">
+  <% if (!products || products.length === 0) { %>
+    <p class="muted">No products found. Try a different search.</p>
   <% } else { %>
-    <ul>
+    <div class="grid">
       <% products.forEach(p => { %>
-        <li><a href="/product/<%= p.id %>"><%= p.name %></a> — $<%= p.price %></li>
+        <div class="card">
+          <a class="imgwrap" href="/product/<%= p.id %>">
+            <img src="<%= p.image %>" alt="<%= p.name %>">
+          </a>
+
+          <div class="content">
+            <div class="row">
+              <a class="name" href="/product/<%= p.id %>"><strong><%= p.name %></strong></a>
+              <div class="price">$<%= p.price.toFixed(2) %></div>
+            </div>
+
+            <% if (p.description) { %>
+              <p class="muted"><%= p.description %></p>
+            <% } %>
+
+            <div class="row gap">
+              <a class="btn secondary" href="/product/<%= p.id %>">Details</a>
+              <!-- if you already have POST /cart/add, you can uncomment this form -->
+              <!--
+              <form action="/cart/add" method="post" class="inline">
+                <input type="hidden" name="id" value="<%= p.id %>">
+                <input type="number" name="qty" value="1" min="1" class="qty">
+                <button class="btn" type="submit">Add to Cart</button>
+              </form>
+              -->
+            </div>
+          </div>
+        </div>
       <% }) %>
-    </ul>
+    </div>
   <% } %>
 </section>
+
 <%- include('partials/footer') %>
