@@ -1,9 +1,19 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title><%= title || 'VoltStore' %></title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title><%= typeof title !== 'undefined' ? title + ' – ' : '' %>VoltStore</title>
+  <link rel="stylesheet" href="/css/site.css" />
 </head>
 <body>
-<link rel="stylesheet" href="/css/site.css">
+  <header class="site-header">
+    <div class="container row">
+      <a class="brand" href="/">VoltStore</a>
+      <nav class="nav">
+        <a href="/">Home</a>
+        <a href="/cart" aria-disabled="true" onclick="return false;">Cart</a>
+      </nav>
+    </div>
+  </header>
+  <main>
