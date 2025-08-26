@@ -30,3 +30,7 @@ app.get('/ping', (req, res) => res.status(200).send('pong'));
 
 // ---- Export the app (NO app.listen on Vercel) ----
 module.exports = app;
+// api/index.js
+const serverless = require('serverless-http');
+const app = require('../server'); // loads your Express app from server.js
+module.exports = serverless(app);
