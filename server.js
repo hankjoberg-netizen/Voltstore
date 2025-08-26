@@ -24,7 +24,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Load products
-const PRODUCTS = JSON.parse(fs.readFileSync(path.join(__dirname, 'products.json')));
+const PRODUCTS = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'products.json')));
 
 // Routes
 app.get('/', (req, res) => {
