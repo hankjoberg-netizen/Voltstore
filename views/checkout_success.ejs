@@ -1,0 +1,12 @@
+
+<%- include('partials/header', { title: 'Order Confirmed' }) %>
+<h2>✅ Order confirmed</h2>
+<% if (order) { %>
+  <p>Thanks! Your order <strong><%= order.id %></strong> is paid.</p>
+  <p>We will ship to: <%= order.shipping_name %>, <%= order.shipping_address %></p>
+  <p class="muted">A receipt has been sent to <%= order.email %>.</p>
+<% } else { %>
+  <p>Thanks for your purchase! You will receive a confirmation email shortly.</p>
+<% } %>
+<p><a class="btn" href="/">Back to store</a></p>
+<%- include('partials/footer') %>

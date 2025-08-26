@@ -1,0 +1,35 @@
+
+<%- include('partials/header', { title: 'Your Cart' }) %>
+<h2>Your Cart</h2>
+<% if (!cart || cart.items.length === 0) { %>
+  <p class="muted">Your cart is empty. <a href="/">Keep shopping →</a></p>
+<% } else { %>
+  <form action="/cart/update" method="post">
+    <table>
+      <thead><tr><th>Product</th><th style="width:120px;">Price</th><th style="width:120px;">Qty</th><th style="width:140px;">Subtotal</th><th></th></tr></thead>
+      <tbody>
+        <% cart.items.forEach(item => { %>
+          <tr>
+            <td><a href="/product/<%= item.product.id %>"><%= item.product.name %></a></td>
+            <td>$<%= item.product.price.toFixed(2) %></td>
+            <td><input type="number" name="qty_<%= item.product.id %>" value="<%= item.qty %>" min="1"></td>
+            <td>$<%= (item.product.price * item.qty).toFixed(2) %></td>
+            <td>
+              <form action="/cart/remove" method="post" style="display:inline;">
+                <input type="hidden" name="id" value="<%= item.product.id %>">
+                <button class="btn secondary" type="submit">Remove</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+      <tfoot><tr><td colspan="3" style="text-align:right;">Total</td><td><strong>$<%= cart.total.toFixed(2) %></strong></td><td></td></tr></tfoot>
+    </table>
+    <div style="display:flex;gap:10px;margin-top:16px;align-items:center;">
+      <button class="btn" type="submit">Update Quantities</button>
+      <a class="btn secondary" href="/">Continue Shopping</a>
+      <form action="/checkout" method="post" style="margin-left:auto;"><button class="btn" type="submit">Checkout</button></form>
+    </div>
+  </form>
+<% } %>
+<%- include('partials/footer') %>

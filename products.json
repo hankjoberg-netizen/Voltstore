@@ -1,0 +1,58 @@
+[
+  {
+    "id": "s260-speaker-lamp",
+    "name": "Aurora S260 RGB Speaker Lamp",
+    "price": 49.99,
+    "image": "https://s.alicdn.com/@sc04/kf/H10572eb5da8a4baa974a135fd5fdcb06I.png_720x720q50.jpg",
+    "description": "Compact Bluetooth speaker with integrated RGB desk lamp and ambient modes."
+  },
+  {
+    "id": "mag-5000-slim",
+    "name": "MagCharge 5K Slim Power Bank",
+    "price": 39.99,
+    "image": "https://s.alicdn.com/@sc04/kf/H6193b199da794dda8b910fdc4f757818N.png_720x720q50.jpg",
+    "description": "Ultra-slim magnetic 5000mAh power bank for modern smartphones; fast wireless charge."
+  },
+  {
+    "id": "dy28s-alarm-speaker",
+    "name": "GlowClock RGB Alarm Speaker",
+    "price": 44.99,
+    "image": "https://s.alicdn.com/@sc04/kf/H575d95d1691e4fea81834299b16faa7cW.jpg_720x720q50.jpg",
+    "description": "Bedside alarm clock with Bluetooth speaker and multicolor night light."
+  },
+  {
+    "id": "pd20w-10000",
+    "name": "VoltPack 10K Magnetic Power Bank (PD20W)",
+    "price": 49.99,
+    "image": "https://s.alicdn.com/@sc04/kf/He4abba8cf30a4c7897bcfe415382e043B.jpg_960x960q80.jpg",
+    "description": "10000mAh magnetic battery with USB\u2011C PD 20W and clear LED display."
+  },
+  {
+    "id": "metal-lamp-speaker",
+    "name": "Nova Metal Desk Lamp Speaker",
+    "price": 59.99,
+    "image": "https://s.alicdn.com/@sc04/kf/H13d23deadee4481197c8c8dad529aacbi.jpg_720x720q50.jpg",
+    "description": "Modern metal lamp with integrated Bluetooth speaker and touch control."
+  },
+  {
+    "id": "wireless-nightlight-speaker",
+    "name": "Halo Wireless Night Light Speaker",
+    "price": 54.99,
+    "image": "https://s.alicdn.com/@sc04/kf/H79821620cd7a4e65b3908da63bf4410fr.png_720x720q50.jpg",
+    "description": "Soft-glow night light plus Bluetooth speaker; wireless charging friendly design."
+  },
+  {
+    "id": "ultra-thin-5k",
+    "name": "Feather 5K Ultra\u2011Thin Power Bank",
+    "price": 42.99,
+    "image": "https://s.alicdn.com/@sc04/kf/H014d1f20dae2415f84a8170397962618H.png_720x720q50.jpg",
+    "description": "Pocket-thin 5000mAh charger with magnetic alignment and pass\u2011through charging."
+  },
+  {
+    "id": "y96-stand-bank",
+    "name": "StandMag 5K Power Bank (Kickstand)",
+    "price": 34.99,
+    "image": "https://s.alicdn.com/@sc04/kf/H5497ec48bc364415bd5f50c20d3aa858u.jpg_720x720q50.jpg",
+    "description": "Compact magnetic power bank with built\u2011in kickstand for hands\u2011free viewing."
+  }
+]
