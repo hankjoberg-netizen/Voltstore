@@ -1,54 +1,57 @@
-<%- include('partials/header', { title: 'VoltStore' }) %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VoltStore ⚡</title>
+  <link rel="stylesheet" href="/css/site.css" />
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <h1 class="logo">⚡ VoltStore</h1>
+      <a href="/cart" class="cart-btn">🛒 Cart (<%= cartCount || 0 %>)</a>
+    </div>
+  </header>
 
-<section class="hero">
-  <div class="container">
-    <h1>Fresh tech, shipped by VoltStore</h1>
-    <p>Browse our curated gadgets. Click a product to see details and buy directly from us.</p>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <h2>Fresh tech, shipped by <span>VoltStore</span></h2>
+      <p>Browse our curated gadgets. Click a product to see details and buy directly from us.</p>
+      <form action="/" method="GET" class="search-form">
+        <input type="text" name="q" placeholder="Search products..." />
+        <button type="submit">Search</button>
+      </form>
+    </div>
+  </section>
 
-    <form class="searchbar" method="get" action="/">
-      <input type="text" name="q" placeholder="Search products..." value="<%= q || '' %>">
-      <button class="btn" type="submit">Search</button>
-    </form>
-  </div>
-</section>
-
-<section class="container">
-  <% if (!products || products.length === 0) { %>
-    <p class="muted">No products found. Try a different search.</p>
-  <% } else { %>
-    <div class="grid">
-      <% products.forEach(p => { %>
-        <div class="card">
-          <a class="imgwrap" href="/product/<%= p.id %>">
-            <img src="<%= p.image %>" alt="<%= p.name %>">
-          </a>
-
-          <div class="content">
-            <div class="row">
-              <a class="name" href="/product/<%= p.id %>"><strong><%= p.name %></strong></a>
-              <div class="price">$<%= p.price.toFixed(2) %></div>
-            </div>
-
-            <% if (p.description) { %>
-              <p class="muted"><%= p.description %></p>
-            <% } %>
-
-            <div class="row gap">
-              <a class="btn secondary" href="/product/<%= p.id %>">Details</a>
-              <!-- if you already have POST /cart/add, you can uncomment this form -->
-              <!--
-              <form action="/cart/add" method="post" class="inline">
-                <input type="hidden" name="id" value="<%= p.id %>">
-                <input type="number" name="qty" value="1" min="1" class="qty">
-                <button class="btn" type="submit">Add to Cart</button>
-              </form>
-              -->
-            </div>
+  <!-- Products Grid -->
+  <main class="container">
+    <div class="product-grid">
+      <% products.forEach(product => { %>
+        <div class="product-card">
+          <img src="<%= product.image %>" alt="<%= product.name %>" />
+          <h3><%= product.name %></h3>
+          <p class="price">$<%= product.price.toFixed(2) %></p>
+          <p class="description"><%= product.description %></p>
+          <div class="actions">
+            <form action="/cart/add/<%= product.id %>" method="POST">
+              <button type="submit">Add to Cart</button>
+            </form>
+            <a href="/product/<%= product.id %>" class="details-btn">Details</a>
           </div>
         </div>
       <% }) %>
     </div>
-  <% } %>
-</section>
+  </main>
 
-<%- include('partials/footer') %>
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>⚡ VoltStore © <%= new Date().getFullYear() %>. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>
