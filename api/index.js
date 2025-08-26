@@ -1,4 +1,3 @@
-// api/index.js
 const serverless = require('serverless-http');
-const app = require('../server');   // <-- loads your Express app
+const app = require('../server');
 module.exports = serverless(app);
