@@ -1,77 +1,48 @@
-// server.js — Express app for VoltStore (safe + Vercel-ready)
+// server.js — plain Express app (exported), works on Vercel and locally
 const express = require('express');
 const path = require('path');
-const fs = require('fs');
+const products = require('./products.json');
 
 const app = express();
 
-/* ------------ Views & Static ------------ */
+// EJS
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));           // /views at repo root
-app.use(express.static(path.join(__dirname, 'public')));    // serves /public/*
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+app.set('views', path.join(__dirname, 'views'));
 
-/* ------------ Load products safely ------------ */
-const PRODUCTS_FILE = path.join(__dirname, 'products.json');
-let PRODUCTS = [];
-try {
-  if (fs.existsSync(PRODUCTS_FILE)) {
-    const raw = fs.readFileSync(PRODUCTS_FILE, 'utf8') || '[]';
-    const parsed = JSON.parse(raw);
-    PRODUCTS = Array.isArray(parsed) ? parsed : [];
+// Static assets
+app.use('/css', express.static(path.join(__dirname, 'public/css')));
+app.use('/js', express.static(path.join(__dirname, 'public/js')));
+
+// Helpers available to EJS
+app.locals.asMoney = (n) => Number(n).toFixed(2);
+
+// Routes
+app.get('/api/health', (req, res) => res.status(200).json({ ok: true }));
+
+app.get('/', (req, res) => {
+  const q = (req.query.q || '').toLowerCase();
+  let list = products;
+  if (q) {
+    list = products.filter(p =>
+      [p.name, p.description].join(' ').toLowerCase().includes(q)
+    );
   }
-} catch (e) {
-  console.error('Failed to load products.json:', e);
-  PRODUCTS = [];
-}
-
-/* ------------ Helpers ------------ */
-const asMoney = (val) => {
-  const n = Number(val);
-  if (Number.isFinite(n)) return n.toFixed(2);
-  const parsed = Number(String(val).replace(/[^0-9.]/g, ''));
-  return Number.isFinite(parsed) ? parsed.toFixed(2) : '0.00';
-};
-
-/* ------------ Routes ------------ */
-
-// Health (quick test)
-app.get('/health', (_req, res) => res.status(200).type('text').send('ok'));
-
-// Home — exactly 8 products (4 + 4)
-app.get('/', (req, res, next) => {
-  try {
-    const q = (req.query.q || '').trim().toLowerCase();
-    let list = PRODUCTS;
-    if (q) {
-      list = PRODUCTS.filter(p =>
-        ((p.name || '') + ' ' + (p.description || '')).toLowerCase().includes(q)
-      );
-    }
-    const featured = list.slice(0, 8);
-    res.render('index', { products: featured, q, asMoney });
-  } catch (err) {
-    next(err);
-  }
+  // show 8 items (4x2 grid)
+  list = list.slice(0, 8);
+  res.render('index', { products: list, q });
 });
 
-// Product detail
-app.get('/product/:id', (req, res, next) => {
-  try {
-    const p = PRODUCTS.find(x => String(x.id) === String(req.params.id));
-    if (!p) return res.status(404).type('text').send('Product not found');
-    res.render('product', { p, asMoney });
-  } catch (err) {
-    next(err);
-  }
+app.get('/product/:id', (req, res) => {
+  const p = products.find(x => String(x.id) === String(req.params.id));
+  if (!p) return res.status(404).send('Not found');
+  res.render('product', { p });
 });
 
-// Error handler (surface real error text in logs)
-app.use((err, _req, res, _next) => {
-  console.error('Unhandled error:', err);
-  res.status(500).type('text').send('Internal Error: ' + (err?.message || 'unknown'));
-});
-
-// Export for Vercel (no app.listen() here)
+// Export for Vercel
 module.exports = app;
+
+// Run locally: `node server.js`
+if (require.main === module) {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => console.log(`http://localhost:${PORT}`));
+}
