@@ -23,13 +23,14 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Load products
+// 🟢 Safely load products.json
 let PRODUCTS = [];
 try {
   const data = fs.readFileSync(path.join(process.cwd(), 'products.json'), 'utf-8');
   PRODUCTS = JSON.parse(data);
+  console.log('Loaded products.json with', PRODUCTS.length, 'products');
 } catch (err) {
-  console.error('Failed to load products.json:', err);
+  console.error('⚠️ Failed to load products.json:', err.message);
 }
 
 // Routes
@@ -118,7 +119,7 @@ app.get('/success', async (req, res) => {
 
 app.get('/cancel', (req, res) => res.render('checkout_cancel'));
 
-// 🟢 Test route for debugging
+// 🟢 Test route
 app.get('/ping', (req, res) => {
   res.send('pong');
 });
