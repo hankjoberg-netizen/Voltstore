@@ -24,7 +24,13 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Load products
-const PRODUCTS = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'products.json')));
+let PRODUCTS = [];
+try {
+  const data = fs.readFileSync(path.join(process.cwd(), 'products.json'), 'utf-8');
+  PRODUCTS = JSON.parse(data);
+} catch (err) {
+  console.error('Failed to load products.json:', err);
+}
 
 // Routes
 app.get('/', (req, res) => {
