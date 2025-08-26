@@ -1,23 +1,32 @@
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
-// --- Views & static ---
+// Middleware
+app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-app.use(express.static(path.join(__dirname, 'public')));
 
-// --- Routes you already have ---
+// Load products.json
+const products = JSON.parse(fs.readFileSync(path.join(__dirname, 'products.json'), 'utf-8'));
+
+// Homepage (limit to 8 products → 4 top + 4 bottom)
 app.get('/', (req, res) => {
-  // If you have a views/index.ejs:
-  // res.render('index', { /* pass data */ });
-  // For a quick smoke test:
-  res.type('text').send('home');
+  const featuredProducts = products.slice(0, 8);
+  res.render('index', { products: featuredProducts });
 });
 
-app.get('/ping', (req, res) => res.type('text').send('pong'));
+// Ping test route
+app.get('/ping', (req, res) => {
+  res.send('pong');
+});
 
-// DO NOT app.listen() on Vercel serverless
-// Vercel will call the handler from api/index.js
-module.exports = app;
+// Export for Vercel or run locally
+if (process.env.VERCEL) {
+  module.exports = app;
+} else {
+  app.listen(PORT, () => console.log(`VoltStore running locally on http://localhost:${PORT}`));
+}
