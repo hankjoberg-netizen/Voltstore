@@ -1,39 +1,23 @@
-// server.js
-const path = require('path');
 const express = require('express');
+const path = require('path');
 
 const app = express();
 
-// Views (EJS) + static
+// --- Views & static ---
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
 
-// --- Routes ---
-// Home
+// --- Routes you already have ---
 app.get('/', (req, res) => {
-  // If you already have views/index.ejs, this will render it.
-  // Otherwise it will just send plain text so you at least see something.
-  try {
-    return res.render('index', { title: 'VoltStore' });
-  } catch {
-    return res.send('VoltStore home ✅');
-  }
+  // If you have a views/index.ejs:
+  // res.render('index', { /* pass data */ });
+  // For a quick smoke test:
+  res.type('text').send('home');
 });
 
-// Simple health check
-app.get('/health', (_req, res) => res.status(200).send('ok'));
+app.get('/ping', (req, res) => res.type('text').send('pong'));
 
-// Export for Vercel, listen locally for dev
-const PORT = process.env.PORT || 3000;
-if (process.env.VERCEL || process.env.NOW_REGION) {
-  // Running on Vercel (Serverless)
-  module.exports = app;
-} else {
-  // Running locally (Replit/Node)
-  app.listen(PORT, () => {
-    console.log(`VoltStore listening on http://localhost:${PORT}`);
-  });
-}
+// DO NOT app.listen() on Vercel serverless
+// Vercel will call the handler from api/index.js
+module.exports = app;
