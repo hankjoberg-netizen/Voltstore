@@ -1,34 +1,18 @@
-
 <%- include('partials/header', { title: 'Shop Tech Gadgets' }) %>
-<section class="hero"><div class="container" style="padding:28px 20px;">
-  <h1>Fresh tech, shipped by VoltStore</h1>
-  <p>Browse our curated gadgets. Click a product to see details and buy directly from us.</p>
-  <form class="searchbar" method="get" action="/">
-    <input type="text" name="q" placeholder="Search products..." value="<%= q || '' %>">
-    <button class="btn" type="submit">Search</button>
-  </form>
-</div></section>
-<section><div class="grid">
-<% if (products.length === 0) { %><p>No products found. Try a different search.</p><% } %>
-<% products.forEach(p => { %>
-  <div class="card">
-    <a href="/product/<%= p.id %>"><img src="<%= p.image %>" alt="<%= p.name %>"></a>
-    <div class="content">
-      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px;">
-        <a href="/product/<%= p.id %>"><strong><%= p.name %></strong></a>
-        <div class="price">$<%= p.price.toFixed(2) %></div>
-      </div>
-      <p class="muted"><%= p.description %></p>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;">
-        <form action="/cart/add" method="post" style="display:inline-flex;gap:8px;align-items:center;">
-          <input type="hidden" name="id" value="<%= p.id %>">
-          <input type="number" name="qty" value="1" min="1" style="width:80px;">
-          <button class="btn" type="submit">Add to Cart</button>
-        </form>
-        <a class="btn secondary" href="/product/<%= p.id %>">Details</a>
-      </div>
-    </div>
-  </div>
-<% }) %>
-</div></section>
+<section class="container" style="padding:24px">
+  <h1>VoltStore ✅</h1>
+  <p>If you can see this, EJS is working.</p>
+
+  <p><a href="/ping">Test /ping</a></p>
+
+  <% if ((products || []).length === 0) { %>
+    <p>No products loaded. That’s ok for this test.</p>
+  <% } else { %>
+    <ul>
+      <% products.forEach(p => { %>
+        <li><a href="/product/<%= p.id %>"><%= p.name %></a> — $<%= p.price %></li>
+      <% }) %>
+    </ul>
+  <% } %>
+</section>
 <%- include('partials/footer') %>
