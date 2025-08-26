@@ -1,4 +1,5 @@
-const serverless = require('serverless-http');
-const app = require('../server');
-
-module.exports = serverless(app);
+// Minimal handler to confirm Vercel is serving our function
+module.exports = (req, res) => {
+  if (req.url === '/ping') return res.status(200).send('pong');
+  return res.status(200).send('root ok');
+};
