@@ -1,17 +1,27 @@
+<%- include('partials/header', { title: p.name }) %>
 
-<%- include('partials/header', { title: product.name }) %>
-<article style="display:grid;grid-template-columns:1fr;gap:20px;">
-  <img src="<%= product.image %>" alt="<%= product.name %>" style="width:100%;max-height:420px;object-fit:cover;border-radius:16px;border:1px solid #1c2346;">
-  <div style="display:grid;gap:12px;">
-    <h2 style="margin:0;"><%= product.name %></h2>
-    <div class="price" style="font-size:22px;">$<%= product.price.toFixed(2) %></div>
-    <p class="muted"><%= product.description %></p>
-    <div class="notice">Ships from VoltStore. Secure checkout. Easy returns.</div>
-    <form action="/cart/add" method="post" style="display:inline-flex;gap:8px;align-items:center;">
-      <input type="hidden" name="id" value="<%= product.id %>">
-      <input type="number" name="qty" value="1" min="1" style="width:80px;">
-      <button class="btn" type="submit">Add to Cart</button>
-    </form>
+<section class="section">
+  <div class="container">
+    <div class="product-detail">
+      <div class="pd-left">
+        <div class="pd-thumb">
+          <img src="<%= p.image %>" alt="<%= p.name %>">
+        </div>
+      </div>
+      <div class="pd-right">
+        <h1><%= p.name %></h1>
+        <div class="pd-price">$<%= asMoney(p.price) %></div>
+        <p class="pd-desc"><%= p.description || '' %></p>
+
+        <!-- Placeholder buy button (wire to your checkout later) -->
+        <form action="#" method="post" onsubmit="alert('Checkout coming soon');return false;">
+          <button class="btn primary" type="submit">Buy Now</button>
+        </form>
+
+        <p class="muted" style="margin-top:12px">Ships from VoltStore. Support included.</p>
+      </div>
+    </div>
   </div>
-</article>
+</section>
+
 <%- include('partials/footer') %>
