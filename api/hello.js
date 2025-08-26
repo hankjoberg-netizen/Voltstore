@@ -1,4 +1,6 @@
 // api/hello.js
 module.exports = (req, res) => {
-  res.status(200).type('text').send('OK ' + req.url);
+  res.setHeader('Content-Type', 'text/plain');
+  res.statusCode = 200;
+  res.end('OK ' + req.url);
 };
