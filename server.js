@@ -199,8 +199,10 @@ app.get('/success', async (req, res) => {
 app.get('/cancel', (req, res) => { res.render('checkout_cancel'); });
 
 // Export app for Vercel, or listen locally for dev
-if (process.env.VERCEL) {
+if (process.env.VERCEL || process.env.NOW_REGION) {
+  // Running on Vercel serverless
   module.exports = app;
 } else {
+  // Running locally
   app.listen(PORT, () => console.log(`VoltStore listening on http://localhost:${PORT}`));
 }
